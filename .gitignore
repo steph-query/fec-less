@@ -1,0 +1,4 @@
+*.tfstate*
+.ipynb_checkpoints
+connection.ini
+.terraform
