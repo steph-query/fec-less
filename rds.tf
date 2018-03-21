@@ -1,5 +1,5 @@
 provider "aws" {
-  region     = "us-west-2"
+  region = "us-west-2"
 }
 
 ################
@@ -18,6 +18,7 @@ resource "aws_db_instance" "swingleft_default" {
   vpc_security_group_ids = ["${aws_security_group.swingleft_default.id}"]
   db_subnet_group_name   = "${aws_db_subnet_group.swingleft_default.id}"
   publicly_accessible    = "true"
+  skip_final_snapshot    = "true"
 }
 
 resource "aws_db_subnet_group" "swingleft_default" {
@@ -26,14 +27,13 @@ resource "aws_db_subnet_group" "swingleft_default" {
   subnet_ids  = ["${aws_subnet.subnet_1.id}", "${aws_subnet.subnet_2.id}"]
 }
 
-
 ###########
 # Subnets #
 ###########
 resource "aws_subnet" "subnet_1" {
-  vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${var.subnet_1_cidr}"
-  availability_zone = "${var.az_1}"
+  vpc_id                  = "${var.vpc_id}"
+  cidr_block              = "${var.subnet_1_cidr}"
+  availability_zone       = "${var.az_1}"
   map_public_ip_on_launch = "true"
 
   tags {
@@ -42,9 +42,9 @@ resource "aws_subnet" "subnet_1" {
 }
 
 resource "aws_subnet" "subnet_2" {
-  vpc_id            = "${var.vpc_id}"
-  cidr_block        = "${var.subnet_2_cidr}"
-  availability_zone = "${var.az_2}"
+  vpc_id                  = "${var.vpc_id}"
+  cidr_block              = "${var.subnet_2_cidr}"
+  availability_zone       = "${var.az_2}"
   map_public_ip_on_launch = "true"
 
   tags {
@@ -147,7 +147,7 @@ variable "az_2" {
 }
 
 variable "vpc_id" {
-  default = "vpc-8dab51e9"
+  default     = "vpc-8dab51e9"
   description = "VPC ID"
 }
 
@@ -176,4 +176,3 @@ output "db_instance_id" {
 output "db_instance_address" {
   value = "${aws_db_instance.swingleft_default.address}"
 }
-
